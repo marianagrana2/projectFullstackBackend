@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use("/api/v1/users", require("./routes/usersRoutes"))
-app.use("api/v1/albums", require("./routes/albumsRoutes"))
+app.use("/api/v1/albums", require("./routes/albumsRoutes"))
 
 app.use(errorHandler)
 app.listen(port, () => console.log(`Servidor iniciado en el puerto ${port}`))
