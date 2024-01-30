@@ -15,8 +15,6 @@ const getAlbums = asyncHandler(async (req,res) => {
 
     try{
         const response = await axios.get(API_URL)
-        console.log(API_URL)        
-        console.log(response.data)
         return res.status(200).json({albums: response.data.album})       
     } catch(error) {
         console.error(error)
@@ -26,30 +24,11 @@ const getAlbums = asyncHandler(async (req,res) => {
 })
 // Add Album
 const addAlbum = asyncHandler (async (req, res) => {
-    const {artistName} = req.query
-    const API_URL = `https://www.theaudiodb.com/api/v1/json/2/discography.php?s=${artistName}`
-   try{
-    const response = await axios.get(API_URL)
-    const albums = response.data.album
-    console.log(albums)
-
-    
-    const albumAPIName = albums.strAlbum
-
-    console.log(albumAPIName)
-    
-    // No se está creando y tiene fallas en el post localhost:3005
-    const album = new Album({albumName: albumAPIName})
-    console.log(album)
+    const {albumName} = req.body
+    const album = new Album({albumName})
     await album.save()
-
-    console.log(`Album guardado: ${albumAPIName}`)
-    res.status(200).json({message: `Album name: ${albumAPIName}`})
-        
-   } catch(error){
-    console.error(error)
-        return res.status(500).json({message: "Internal Server Error"})
-   }  
+    console.log(`Album guardado: ${album.albumName}`)
+    res.status(200).json({message: `Album name: ${album.albumName}`})
 })
 
 

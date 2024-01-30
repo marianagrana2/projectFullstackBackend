@@ -6,7 +6,8 @@ const albumSchema = mongoose.Schema({
         ref: 'User'
     },
     albumName:{
-        type: String
+        type: String,
+        required: true
     },
     albumYear:{
        type: String
