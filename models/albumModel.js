@@ -7,7 +7,7 @@ const albumSchema = mongoose.Schema({
     },
     albumName:{
         type: String,
-        required: true
+        required: true,
     },
     albumYear:{
        type: String
