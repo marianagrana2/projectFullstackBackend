@@ -31,7 +31,7 @@ const addAlbum = asyncHandler (async (req, res) => {
     try{
         await album.save()
         
-        console.log(`Album guardado: ${album.albumName}`)
+        console.log(`Album guardado: ${album.albumName} Album Year: ${album.albumYear}`)
         res.status(200).json({message: `Album name: ${album.albumName}`});
     } catch(error){
         console.error(error)
