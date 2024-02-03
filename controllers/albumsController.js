@@ -25,10 +25,20 @@ const getAlbums = asyncHandler(async (req,res) => {
 // Add Album
 const addAlbum = asyncHandler (async (req, res) => {
     const {albumName} = req.body
+
+    if(!albumName){
+        return res.status(400).json({message: 'Album name is required'})
+    }
     const album = new Album({albumName})
-    await album.save()
-    console.log(`Album guardado: ${album.albumName}`)
-    res.status(200).json({message: `Album name: ${album.albumName}`})
+    try{
+        await album.save()
+        console.log(`Album guardado: ${album.albumName}`)
+        res.status(200).json({message: `Album name: ${album.albumName}`});
+    } catch(error){
+        console.error(error)
+        res.status(500).json({message: "Error al guardar el album"})
+    }
+    
 })
 
 
