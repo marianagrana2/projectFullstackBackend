@@ -24,15 +24,34 @@ const getAlbums = asyncHandler(async (req,res) => {
 })
 // Add Album
 const addAlbum = asyncHandler (async (req, res) => {
+    console.log("headers", req.headers)
+    if(!req.user || !req.user._id){
+        return res.status(400).json({message: "User Id is required"})
+    }
+    console.log("req.user:",req.user)
+    const user = await User.findById(req.user._id)
     
     console.log(req.body)
     
-    const album = new Album(req.body)
+   const album = new Album({
+        user: req.user._id,
+        albumName: req.body.albumName,
+        albumYear: req.body.albumYear
+    })
     try{
         await album.save()
         
         console.log(`Album guardado: ${album.albumName} Album Year: ${album.albumYear}`)
+        if(user){
+            user.albums.push(album._id)
+            await user.save()
+            
+        } else {
+            console.error("User not found.")
+            return res.status(404).json({message: "User not found."})
+        }
         res.status(200).json({message: `Album name: ${album.albumName}`});
+        
     } catch(error){
         console.error(error)
         res.status(500).json({message: "Error al guardar el album"})
