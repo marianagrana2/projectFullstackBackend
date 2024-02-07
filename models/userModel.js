@@ -14,6 +14,12 @@ const userSchema = mongoose.Schema({
         type:String,
         required: [true, "Por favor ingresa tu contraseña."]
     },
+    albums: [
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: 'Album'
+        }
+    ],
     isAdmin:{
         type:Boolean,
         default: false
