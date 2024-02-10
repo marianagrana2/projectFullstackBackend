@@ -24,22 +24,25 @@ const getAlbums = asyncHandler(async (req,res) => {
 })
 // Add Album
 const addAlbum = asyncHandler (async (req, res) => {
-    console.log("headers", req.headers)
+    const user = await User.findById(req.user._id)
     if(!req.user || !req.user._id){
         return res.status(400).json({message: "User Id is required"})
     }
-    console.log("req.user:",req.user)
-    const user = await User.findById(req.user._id)
-    
-    console.log(req.body)
-    
+    try{
+    console.log("AlbumData backend body", req.body)
+    console.log("albumName backend:",req.body.albumName)
+    if(!req.body.albumName){
+        return res.status(400).json({message: "AlbumName are required"})
+    }
+   
    const album = new Album({
         user: req.user._id,
-        albumName: req.body.albumName,
-        albumYear: req.body.albumYear
+        albumName:req.body.albumName,
+        albumYear:req.body.albumYear
     })
-    try{
-        await album.save()
+
+        const savedAlbum = await album.save();
+        res.status(201).json(savedAlbum)
         
         console.log(`Album guardado: ${album.albumName} Album Year: ${album.albumYear}`)
         if(user){
@@ -49,8 +52,7 @@ const addAlbum = asyncHandler (async (req, res) => {
         } else {
             console.error("User not found.")
             return res.status(404).json({message: "User not found."})
-        }
-        res.status(200).json({message: `Album name: ${album.albumName}`});
+        }   
         
     } catch(error){
         console.error(error)
