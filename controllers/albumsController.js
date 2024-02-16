@@ -15,12 +15,12 @@ const getAlbums = asyncHandler(async (req,res) => {
 
     try{
         const response = await axios.get(API_URL)
-        return res.status(200).json({albums: response.data.album})       
+        return res.status(200).json({albums: response.data.album})  
     } catch(error) {
         console.error(error)
         return res.status(500).json({message: "Internal Server Error"})
-    }
-   
+     } 
+
 })
 // Add Album
 const addAlbum = asyncHandler (async (req, res) => {
@@ -43,6 +43,13 @@ const addAlbum = asyncHandler (async (req, res) => {
 
         const savedAlbum = await album.save();
         res.status(201).json(savedAlbum)
+
+        //PROBAR ESTE CODIGO
+        /*const user = await User.findOneAndUpdate(
+            {_id: req.user._id},
+            {$push: {albums: album._id}},
+            {new: true, upsert: true}
+        )*/
         
         console.log(`Album guardado: ${album.albumName} Album Year: ${album.albumYear}`)
         if(user){
@@ -64,22 +71,23 @@ const addAlbum = asyncHandler (async (req, res) => {
 
 //Delete Album 
 const deleteAlbum = asyncHandler(async (req,res) => {
-    const albumName = req.body.albumName;
     const user = await User.findOne({email: req.user.email})
-
-    const albumIndex = user.albums.findIndex(
-        (albumId) => albumId.toString() === req.params.albumId
-    )
-    if(albumIndex === -1){
-        res.status(404).json({message: "Album not found"})
-        return
+    const albumId = req.params.albumId
+    const album = await Album.findById(req.params.albumId)
+    console.log("req.params baackend:",req.params)
+    console.log("album Id backend:",albumId)
+    console.log("album valor backend:",album)
+    if(!album){
+        res.status(400)
+        throw new Error("Album not found.")
     }
-
-    user.albums.splice(albumIndex, 1)
-    await user.save()
-
-    res.json({message: "Album deleted", user})
-
+    if(album.user.toString() != req.user._id){
+        res.status(401)
+        throw new Error("Unauthorized access.")
+    } else{
+        await Album.deleteOne({_id: albumId})
+        res.status(200).json({id: albumId})
+    }
 })
 
 module.exports = {

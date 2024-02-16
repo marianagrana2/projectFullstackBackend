@@ -4,7 +4,7 @@ const {getAlbums, addAlbum, deleteAlbum} = require ("../controllers/albumsContro
 const {protect} = require('../middlewares/authMiddleware')
 
 router.post("/add",protect,addAlbum)
-router.delete("/:albumName",protect,deleteAlbum)
+router.delete("/:albumId",protect,deleteAlbum)
 router.get("/",getAlbums)
 
 
