@@ -29,7 +29,6 @@ const addAlbum = asyncHandler (async (req, res) => {
         return res.status(400).json({message: "User Id is required"})
     }
     try{
-    console.log("AlbumData backend body", req.body)
     console.log("albumName backend:",req.body.albumName)
     if(!req.body.albumName){
         return res.status(400).json({message: "AlbumName are required"})
@@ -44,12 +43,6 @@ const addAlbum = asyncHandler (async (req, res) => {
         const savedAlbum = await album.save();
         res.status(201).json(savedAlbum)
 
-        //PROBAR ESTE CODIGO
-        /*const user = await User.findOneAndUpdate(
-            {_id: req.user._id},
-            {$push: {albums: album._id}},
-            {new: true, upsert: true}
-        )*/
         
         console.log(`Album guardado: ${album.albumName} Album Year: ${album.albumYear}`)
         if(user){
@@ -74,7 +67,6 @@ const deleteAlbum = asyncHandler(async (req,res) => {
     const user = await User.findOne({email: req.user.email})
     const albumId = req.params.albumId
     const album = await Album.findById(req.params.albumId)
-    console.log("req.params baackend:",req.params)
     console.log("album Id backend:",albumId)
     console.log("album valor backend:",album)
     if(!album){
