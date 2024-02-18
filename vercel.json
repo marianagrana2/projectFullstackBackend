@@ -1,9 +1,8 @@
 {
     "version": 2,
-    "functions":[
-         {
+    "functions":{       
             "src":  "./backend/server.js",
-            "runtime": "nodejs18.x"
-        }       
-      ]
+            "use": "@vercel/node",
+            "runtime": "nodejs18.x"        
+    }
 }
