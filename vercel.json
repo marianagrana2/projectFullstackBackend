@@ -1,15 +1,9 @@
 {
     "version": 2,
-    "functions":{
-         "./backend/server.js": {
-            "runtime": "nodejs14.x",
-            "maxDuration": 10
+    "functions":[
+         {
+            "src":  "./backend/server.js",
+            "runtime": "nodejs18.x"
         }       
-    },
-    "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/backend/server.js"
-        }
-    ]
+      ]
 }
