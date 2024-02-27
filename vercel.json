@@ -1,11 +1,14 @@
 {
     "version": 2,
     "functions":{
-        "api":"server.js"
+        "api": {
+            "type": "node",
+            "main": "server.js"
+        }
     },
     "routes": [
         {
-            "src": "/api/(.*)",
+            "src": "/api/v1/(.*)",
             "dest": "/sever.js"
         }
     ]
