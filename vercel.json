@@ -1,10 +1,7 @@
 {
     "version": 2,
     "functions":{
-        "api": {
-            "type": "node",
-            "main": "server.js"
-        }
+        "api": "server.js"  
     },
     "routes": [
         {
